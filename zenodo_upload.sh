@@ -4,16 +4,24 @@
 # usage: ./zenodo_upload.sh [deposition id] [filename] [--verbose|-v]
 #
 
-set -xe
+set -e
 
 VERBOSE=0
 if [ "$3" == "--verbose" ] || [ "$3" == "-v" ]; then
+    set -x
     VERBOSE=1
+fi
+
+# Test if the required arguments are provided
+
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 [deposition id] [filename] [--verbose|-v]"
+    exit 2
 fi
 
 # Test if ZENODO_TOKEN is defined
 
-if [ -z "$ZENODO_TOKEN " ]; then
+if [ -z "$ZENODO_TOKEN" ]; then
     echo "Please use the ZENODO_TOKEN environment variable to set your Zenodo API token."
     echo  "You can create a new token at https://zenodo.org/account/settings/applications/tokens/new/"
     exit 2
